@@ -1,0 +1,67 @@
+class calendar {
+  public static String padded(int n, int width) {
+    // Returns a string of the number n, left-padded
+    // with spaces with spaces until it is at least the given width
+    // Allows columns to line up with widths
+    String s = "" + n;
+    for (int i = s.length(); i < width; i++) {
+      s = " " + s;
+    }
+    return s;
+  }
+  
+  public static void main(String[] args) {
+    printCal(31,6); // accounts for first Sunday being the 6th
+    printCal(31,7); // accounts for first Sunday being the 7th
+    printCal(30,2); // accounts for first Sunday being the 2nd
+    printCal(29,4); // accounts for first Sunday being the 4th
+    printCal(28,1); // ends at 28 because a month can have at least 28 days in it
+  }
+ 
+  public static void printCal(int days, int firstSunday) {
+    System.out.println("   Sun    Mon    Tue    Wed    Thu    Fri    Sat  ");
+    System.out.println("+------+------+------+------+------+------+------+");
+   
+    int weeksInMonth = days % 7; // 4 weeks in month 
+    int date = 1; // first date has to be the first
+    int gap = 8 - firstSunday; // white spaces between dates
+    
+    if (weeksInMonth > 0 && firstSunday <= 3 && days != 29) { // this accounts for the first Sunday being the 2nd 
+      weeksInMonth = 6;
+    }
+    else if (weeksInMonth > 0) {  // this accounts for the first Sunday being the 4th, 7th, or 6th
+      weeksInMonth = 5;
+    }
+    else if (weeksInMonth == 0 && days == 28) { // 4!=0 
+      weeksInMonth = 5;
+    }
+    else {
+      weeksInMonth = 4; // accounts for first Sunday being the 1st
+    }
+   
+    for (int k = 1; k < weeksInMonth; k++) { // 1 < 4 and 6 is not equal to 1
+      if (firstSunday != 1 && k == 1) {
+        for (int p = 0; p < gap; p ++) { // p is less than 8 - firstSunday
+          System.out.print("|      "); 
+        }
+        for (int h = 1; h <= 7 - gap; h++) {
+          System.out.print("| "+padded(date,4)+" "); 
+         date++; // increments dates
+        }
+        System.out.print("|");
+        System.out.println();
+      }
+      for (int i = 1; i <= 7; i++) {
+        if (date <= days) {
+          System.out.print("| "+padded(date,4)+" "); 
+         date++; // 
+        }
+        else
+        System.out.print("|      "); 
+      }
+      System.out.print("|");
+      System.out.println();
+    }
+    System.out.println("+------+------+------+------+------+------+------+");
+  } 
+}
